@@ -36,8 +36,7 @@ const questions = {
     end3: {
         question: "你追问小紫，小紫面露难色，小脸变得红扑扑的，突然，脸上的血管越来越清晰，突然，她一把推开你，，，，，，她青筋暴起，体型越来越大，变成了绿巨人浩克，并说道：不要逼我变身，说完，一拳朝你袭来，，，，",
         options: [
-            { text: "接受道歉，继续交往", action: () => renderQuestion({4:1}) },
-            { text: "不接受，因为你已经放下了，并且准备重新开始", action: () => renderQuestion({4:1}) },
+            { text: "你已经触发了结局", action: () => renderQuestion({4:1}) }
         ],
     },
     // 5: {
