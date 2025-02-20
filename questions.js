@@ -116,9 +116,7 @@ const questions = {
     end1: {
         question: "拳脚无眼，你一拳打向了小元的腹肌，那感觉，此时，小元也默默的看着你，一时间，时间好像静止了，小元和你不约而同的看向对方，你下意识推开了小紫，握着小元的手，，，，，此时此刻，大智在旁边边偷看偷笑",
         options: [
-            { text: "您已经触发了结局", action: () => renderQuestion({4:1}) },
-            { text: "暴打那个男生", action: () => renderQuestion({4:1}) }, 
-            { text: "俩人一块打", action: () => renderQuestion({4:1}) },   
+            { text: "您已经触发了结局", action: () => renderQuestion({4:1}) },   
         ], 
     },
     end2: {
