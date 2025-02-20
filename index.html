@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question Renderer Test</title>
+    <style>
+      body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 20px;
+}
+
+#question {
+    font-size: 20px;
+   
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.options-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start; /* 左对齐选项 */
+}
+
+.option {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 10px;
+    width: calc(100% - 40px); /* Full width minus margins */
+    max-width: 300px; /* Maximum width for larger screens */
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.option:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+@media (min-width: 600px) {
+    .option {
+        width: calc(50% - 40px); /* Two cards per row on medium screens */
+    }
+}
+
+@media (min-width: 900px) {
+    .option {
+        width: calc(33.33% - 40px); /* Three cards per row on large screens */
+    }
+}
+
+    </style>
+</head>
+<body>
+    <div id="question"></div>
+    <div id="options"></div>
+    <script src="questions.js"></script>
+
+    <script>
+        function executeActions(actions) {
+            actions.forEach(action => action());
+        }
+
+        function onQuestionDisplay(questionId) {
+            alert("问题 " + questionId + " 被显示");
+        }
+
+        // 示例问题和选项
+      
+
+        // 自定义函数
+        function customFunction(selectedOption) {
+            alert("你选择了: " + selectedOption);
+        }
+
+        // 渲染问题的函数
+        function renderQuestion(questionWeights) {
+            const questionDiv = document.getElementById('question');
+            const optionsDiv = document.getElementById('options');
+
+            // 根据权重随机选择一个问题
+            const totalWeight = Object.values(questionWeights).reduce((sum, weight) => sum + weight, 0);
+            const random = Math.random() * totalWeight;
+
+            let cumulativeWeight = 0;
+            let selectedQuestion;
+            for (const [questionId, weight] of Object.entries(questionWeights)) {
+                cumulativeWeight += weight;
+                if (random < cumulativeWeight) {
+                    selectedQuestion = questions[questionId];
+                    break;
+                }
+            }
+
+            questionDiv.innerText = selectedQuestion.question;
+            optionsDiv.innerHTML = '';
+
+            // 渲染选项
+            selectedQuestion.options.forEach(option => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+                optionDiv.innerText = option.text;
+                optionDiv.onclick = option.action; // 直接使用选项中的 action 函数
+                optionsDiv.appendChild(optionDiv);
+            });
+
+            // 调用独特函数
+            executeActions(selectedQuestion.uniqueFunctions);
+
+            // 如果有 onDisplay 函数，调用它
+            if (selectedQuestion.onDisplay) {
+                selectedQuestion.onDisplay();
+            }
+        }
+
+        // 页面加载时渲染问题
+        window.onload = () => {
+            renderQuestion(questionWeights);
+        };
+    </script>
+</body>
+</html>
